@@ -21,6 +21,12 @@
 pip install -r requirements.txt
 ```
 
+## 打包命令
+
+```bash
+pyinstaller --onefile --windowed --name="SpeakerRecorder" rec.py
+```
+
 ## 使用说明
 
 1. 运行程序：
