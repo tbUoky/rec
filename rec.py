@@ -21,6 +21,7 @@ class SpeakerRecorder:
         self.mic = None
         self.record_thread = None
         self.file_name = ""
+        self.is_topmost = False  # 添加置顶状态变量
         
         # 创建UI元素
         self.status_label = tk.Label(master, text="扬声器输出录制", font=("Arial", 14))
@@ -29,14 +30,29 @@ class SpeakerRecorder:
         self.status_text = tk.Label(master, text="准备就绪", fg="blue")
         self.status_text.pack()
         
+        # 添加置顶功能复选框
+        self.topmost_var = tk.BooleanVar()
+        self.topmost_checkbox = tk.Checkbutton(
+            master, 
+            text="窗口置顶", 
+            variable=self.topmost_var, 
+            command=self.toggle_topmost
+        )
+        self.topmost_checkbox.pack()
+        
         self.button_frame = tk.Frame(master)
-        self.button_frame.pack(pady=20)
+        self.button_frame.pack(pady=10)
         
         self.start_button = tk.Button(self.button_frame, text="开始录制", command=self.start_recording, bg="green", fg="white")
         self.start_button.pack(side=tk.LEFT, padx=5)
         
         self.stop_button = tk.Button(self.button_frame, text="停止录制", command=self.stop_recording, bg="red", fg="white", state=tk.DISABLED)
         self.stop_button.pack(side=tk.LEFT, padx=5)
+    
+    def toggle_topmost(self):
+        """切换窗口置顶状态"""
+        self.is_topmost = self.topmost_var.get()
+        self.master.attributes('-topmost', self.is_topmost)
     
     def record_audio(self):
         """在单独线程中录制音频"""
